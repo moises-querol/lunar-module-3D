@@ -1,0 +1,23 @@
+{
+  "name": "lunar-module-viewer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "import-model": "node scripts/import-model.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.180.0",
+    "typescript": "6.0.3",
+    "vite": "8.2.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

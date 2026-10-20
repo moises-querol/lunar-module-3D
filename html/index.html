@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080a0d" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='none' stroke='%23d8b16d' stroke-width='2' d='m16 3 13 13-13 13L3 16Z'/%3E%3C/svg%3E" />
+    <meta name="description" content="Explore a faithful interactive recreation of the original Lunar Module 3D model. Choose a planet, change the flag, and inspect the spacecraft from every angle." />
+    <title>Lunar Module 3D</title>
+  </head>
+  <body>
+    <main id="app">
+      <header class="masthead">
+        <div class="identity"><span class="orbit-mark" aria-hidden="true">◈</span><div><p class="eyebrow">APOLLO 11 · EAGLE</p><h1>Lunar Module <span>3D</span></h1></div></div>
+        <span class="edition">The original model, a new perspective.</span>
+      </header>
+      <div id="viewport" aria-label="3D model viewer"></div>
+      <p id="scene-description" class="sr-only">A stylized silver Apollo lunar module above a gold octagonal base, with four copper landing legs, circular footpads, a ladder, access ramp, and a flag on textured terrain.</p>
+      <section class="toolbar" aria-label="Scene controls">
+        <label class="field" for="environment"><span>LOCATION</span><select id="environment"><option value="moon">Moon</option><option value="mars">Mars</option><option value="venus">Venus</option></select></label>
+        <span class="divider" aria-hidden="true"></span>
+        <label class="field" for="flag"><span>FLAG</span><select id="flag"><option value="usa">USA</option><option value="spain">Spain</option><option value="ussr">USSR</option></select></label>
+        <span class="divider" aria-hidden="true"></span>
+        <button id="reset" type="button" title="Reset camera (R)"><span aria-hidden="true">↺</span> Reset view</button>
+        <button id="help-toggle" class="help-button" type="button" aria-label="Show controls" aria-expanded="false" aria-controls="help" title="Show controls (H)">?</button>
+      </section>
+      <footer class="scene-footer"><span><i aria-hidden="true"></i><span id="scene-label">Moon / USA</span></span><span class="gesture-hint">Drag to orbit <b>·</b> Scroll to zoom</span></footer>
+      <aside id="help" class="help-panel" aria-label="Viewer controls" hidden>
+        <div class="help-heading"><h2>Explore the model</h2><button id="help-close" type="button" aria-label="Close controls">×</button></div>
+        <dl><dt>Orbit</dt><dd>Left-drag / arrow keys</dd><dt>Zoom</dt><dd>Scroll / middle-drag / + −</dd><dt>Pan</dt><dd>Right-drag / Shift + arrows</dd><dt>Reset view</dt><dd>R</dd><dt>Show controls</dt><dd>H</dd></dl>
+        <p>On touch screens, drag with one finger to orbit. Use two fingers to zoom and pan. Keyboard controls work while the model is focused.</p>
+        <p class="historical-note">An educational model, originally created in 2007. Planet and flag choices are visual variations.</p>
+      </aside>
+      <div id="status" class="status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span id="status-message">Preparing the lunar module…</span><button id="retry" type="button" hidden>Retry</button></div>
+      <noscript><p class="no-script">Enable JavaScript to view the interactive lunar module.</p></noscript>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
