@@ -1,18 +1,44 @@
 # Lunar Module 3D
 
-An interactive model of the Apollo 11 Eagle lunar module, available as a TypeScript/Three.js browser viewer and the original C/OpenGL desktop application. The project began as a computer graphics coursework project in 2007.
+An interactive Apollo 11 lunar module model, originally created as a computer graphics coursework project in 2007. This repository contains two implementations:
 
-Inspect the faceted cabin, gold octagonal base, landing legs, footpads, ladder, ramp, and flag. Choose Moon, Mars, or Venus terrain and a USA, Spain, or USSR flag independently. These are visual variations of an educational model, not a flight simulation or a historically exact reconstruction.
+| | Core version | HTML version |
+| --- | --- | --- |
+| Purpose | Refactored original desktop application | New browser implementation of the same model |
+| Technology | C, OpenGL, GLU, GLUT/freeglut | TypeScript, Three.js, Vite, WebGL 2 |
+| Source | `src/` | `html/src/` |
+| Run | Compile with Make | Open in a browser or run with Vite |
 
-## Browser version
+Both show the cabin, gold base, landing legs, ladder, ramp, and flag. Choose Moon, Mars, or Venus terrain and a USA, Spain, or USSR flag independently. The model is an educational visualization, not a flight simulator.
 
-The browser viewer lives in `html/` and uses TypeScript, Three.js, and Vite. It preserves the native model's geometry and color palette, with modern metallic materials, camera-relative inspection lighting, shadows, and panel outlines. It includes mouse, keyboard, and touch controls, reset view, and loading/error messages with retry support.
+## Core version — refactored C/OpenGL
 
-Both versions reference the same original `assets/textures/` files. The browser loads TGA files directly, without maintaining converted images or another source texture collection. It runs as a static application without a backend or database.
+The original application has been reorganized and simplified, with geometry and lighting improvements. It remains a native desktop program using the original OpenGL rendering approach.
 
-### Run locally
+Requires a C compiler, GNU Make, OpenGL, GLU, GLUT/freeglut, and a graphical desktop. On Debian/Ubuntu, install the dependencies with:
 
-Use Node.js 22.12 or newer and a browser with WebGL 2:
+```sh
+sudo apt install build-essential pkg-config freeglut3-dev libgl1-mesa-dev libglu1-mesa-dev
+```
+
+Build and run from the repository root:
+
+```sh
+make
+./lunar-module
+```
+
+Left-drag to rotate, middle-drag to zoom, and Shift + middle-drag to pan. Right-click to choose terrain or a flag. Escape quits.
+
+Generated objects go in `build/`. Run `make clean` to remove them and the executable. The Makefile also includes macOS build paths; macOS compatibility has not been verified.
+
+## HTML version — new TypeScript/Three.js viewer
+
+[Visit the live HTML version](https://lunar-module-3d.vercel.app/) — no installation required; use a browser with WebGL 2 support.
+
+This is a separate browser implementation, not the C application embedded in a webpage. It preserves the model's geometry and colors while adding modern materials, shadows, touch controls, and reset view.
+
+To run locally, use Node.js 22.12 or newer:
 
 ```sh
 cd html
@@ -20,114 +46,38 @@ npm ci
 npm run dev
 ```
 
-Open the address printed by Vite, normally `http://127.0.0.1:5173/`. Keep the repository's shared `assets/` directory alongside `html/` when developing from source.
+Open the address printed by Vite, normally `http://127.0.0.1:5173/`.
 
-### Browser controls
+Left-drag to orbit, scroll or middle-drag to zoom, and right-drag to pan. On touch screens, use one finger to orbit and two to zoom or pan. Use the visible selectors to change terrain or flag, **Reset view** to restore the camera, and **?** for all controls. The browser camera stays upright; the core version uses free trackball rotation.
 
-| Action | Mouse / interface | Keyboard while the model is focused |
-| --- | --- | --- |
-| Orbit | Left-drag | Arrow keys |
-| Zoom | Scroll or middle-drag | + / − |
-| Pan | Right-drag | Shift + arrow keys |
-| Reset camera | Reset view button | R |
-| Show controls | ? button | H |
-| Close controls | Close button | Escape |
-| Change location or flag | Labeled selectors | Tab to the selector and use arrow keys |
-
-On touch screens, use one finger to orbit and two fingers to zoom or pan. Reset view restores the camera without changing the selected location or flag. The browser camera stays upright, unlike the native application's free trackball rotation.
-
-### Production build
-
-To create and preview the static production build:
+To build and preview the static website, run from `html/`:
 
 ```sh
 npm run build
 npm run preview
 ```
 
-Run these commands from `html/`. The build checks TypeScript and produces a self-contained `html/dist/` folder. The preview command serves that build locally; it is not a production server.
+Deploy the generated `html/dist/` contents to a static host such as Vercel. No backend is needed. Use an HTTP/HTTPS server rather than opening `index.html` directly.
 
-Deploy the contents of `html/dist/` with a static HTTP/HTTPS host. Vite bundles the shared textures into this ignored, generated output, so deployment does not require the native source tree. Opening the source HTML directly from the filesystem is not supported.
+## Shared assets and project layout
 
-### Updating the cabin geometry
-
-The cabin's 140 flattened panels are checked in at `html/src/cabin-data.json`. If the native cabin changes, regenerate this data from inside `html/`:
-
-```sh
-npm run import-model
-```
-
-The importer reads `src/scene.c` and preserves the cabin's coordinates and transforms while orienting its faces outward. Ordinary development and production builds use the checked-in data and do not require this command. Other procedural parts are implemented in `html/src/model.ts`.
-
-## Native version requirements
-
-A C compiler, GNU Make, OpenGL, GLU, and GLUT/freeglut development libraries, plus a graphical desktop session.
-
-On Debian or Ubuntu:
-
-```sh
-sudo apt install build-essential pkg-config freeglut3-dev libgl1-mesa-dev libglu1-mesa-dev
-```
-
-On Fedora:
-
-```sh
-sudo dnf install gcc make pkgconf-pkg-config freeglut-devel mesa-libGL-devel mesa-libGLU-devel
-```
-
-The Makefile also includes macOS build paths for Homebrew freeglut or Apple's OpenGL/GLUT frameworks. macOS compatibility has not been verified.
-
-## Native build and run
-
-Run these commands from the repository root; texture paths are relative to that directory.
-
-```sh
-make
-./lunar-module
-```
-
-`make` creates the executable and stores intermediate object and dependency files in `build/`. Generated files are ignored by Git. To remove them:
-
-```sh
-make clean
-```
-
-## Native controls
-
-| Action | Control |
-| --- | --- |
-| Rotate | Left-drag |
-| Zoom | Middle-drag |
-| Pan | Shift + middle-drag |
-| Select terrain or flag | Right-click menu |
-| Quit | Escape |
-
-## Project layout
+Both versions load the same TGA textures from `assets/textures/`. There is no second source asset collection inside `html/`; textures are bundled into the generated browser build when needed.
 
 ```text
-src/                  Native C application and scene geometry
-html/src/             TypeScript viewer, model, materials, controls, and interface
-html/scripts/         Cabin geometry importer
-html/package.json     Browser dependencies and development/build commands
-html/dist/            Generated browser production build, ignored by Git
-assets/textures/      Shared terrain and flag textures
-assets/images/        Original native screenshots
-Makefile              Native build configuration
-DESIGN.md             Product design, architecture, and modernization rationale
+src/              Refactored core application in C
+Makefile          Core build commands
+html/             New TypeScript/Three.js browser application
+assets/textures/  Shared terrain and flag textures
+assets/images/    Core and HTML version screenshots
 ```
 
-## Rendering and assets
+Keep `assets/` alongside `html/` for local development. If the core cabin geometry changes, run `npm run import-model` from `html/` to regenerate `html/src/cabin-data.json`. Other browser model parts are maintained in `html/src/model.ts`; native changes are not automatically synchronized.
 
-The browser renderer uses Three.js with WebGL 2, explicit triangle meshes, physically based materials, and a shadow-casting key light. Terrain and flags reuse the original TGA assets with their native texture orientation. Rendering stops when the view is idle, and the interface adapts to desktop and mobile screens.
+## Screenshots
 
-The native renderer uses legacy OpenGL immediate mode and display lists and requires a compatibility context. Its geometry is defined directly in C. Its texture loader supports the included 256 × 256, uncompressed 24-bit TGA files with a bottom-left origin.
+Fresh renders from the refactored C/OpenGL application alongside the same terrain and flag choices in the new HTML viewer.
 
-See [DESIGN.md](DESIGN.md) for the feature inventory, architecture, and technology choices.
-
-## Native screenshots
-
-These images show the original desktop application; the browser version adds its own control panel, modern lighting, and shadows.
-
-![Lunar module on Mars with the USA flag](assets/images/mars-usa.png)
-
-![Lunar module on Venus with the Spain flag](assets/images/venus-spain.png)
+| Scene | Core — refactored desktop | HTML — new browser viewer |
+| --- | --- | --- |
+| Mars / USA | ![Refactored C/OpenGL model on Mars with the USA flag](assets/images/mars-usa.png) | ![New HTML viewer on Mars with the USA flag](assets/images/html-mars-usa.png) |
+| Venus / Spain | ![Refactored C/OpenGL model on Venus with the Spain flag](assets/images/venus-spain.png) | ![New HTML viewer on Venus with the Spain flag](assets/images/html-venus-spain.png) |
