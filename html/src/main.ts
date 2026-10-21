@@ -1,4 +1,5 @@
 import './styles.css';
+import { inject } from '@vercel/analytics';
 import { Color } from 'three';
 import { Assets } from './assets';
 import { environments, flags } from './presets';
@@ -6,6 +7,8 @@ import type { EnvironmentId, FlagId } from './presets';
 import { createScene } from './scene';
 import { createViewer } from './viewer';
 import type { Viewer } from './viewer';
+
+inject();
 
 function element<T extends HTMLElement>(id: string): T {
   const found = document.getElementById(id);

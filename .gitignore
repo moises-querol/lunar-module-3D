@@ -1,3 +1,4 @@
 *.o
 build/
 lunar-module
+node_modules/
