@@ -1,6 +1,8 @@
 # Lunar Module 3D
 
-An interactive Apollo 11 lunar module model, originally created as a computer graphics coursework project in 2007. This repository contains two implementations:
+An interactive Apollo 11 lunar module model, originally created as a computer graphics coursework project in 2007. [Try the live HTML version](https://lunar-module-3d.vercel.app/) in your browser.
+
+This repository contains two implementations:
 
 | | Core version | HTML version |
 | --- | --- | --- |
@@ -9,7 +11,16 @@ An interactive Apollo 11 lunar module model, originally created as a computer gr
 | Source | `src/` | `html/src/` |
 | Run | Compile with Make | Open in a browser or run with Vite |
 
-Both show the cabin, gold base, landing legs, ladder, ramp, and flag. Choose Moon, Mars, or Venus terrain and a USA, Spain, or USSR flag independently. The model is an educational visualization, not a flight simulator.
+Both show the cabin, gold base, landing legs, ladder, ramp, and flag. Choose Moon, Mars, or Venus terrain and a USA, Spain, or USSR flag independently.
+
+## Screenshots
+
+The same terrain and flag choices rendered by the refactored C/OpenGL application and the new HTML viewer.
+
+| Scene | Core — refactored desktop | HTML — new browser viewer |
+| --- | --- | --- |
+| Mars / USA | ![Refactored C/OpenGL model on Mars with the USA flag](assets/images/mars-usa.png) | ![New HTML viewer on Mars with the USA flag](assets/images/html-mars-usa.png) |
+| Venus / Spain | ![Refactored C/OpenGL model on Venus with the Spain flag](assets/images/venus-spain.png) | ![New HTML viewer on Venus with the Spain flag](assets/images/html-venus-spain.png) |
 
 ## Core version — refactored C/OpenGL
 
@@ -34,7 +45,7 @@ Generated objects go in `build/`. Run `make clean` to remove them and the execut
 
 ## HTML version — new TypeScript/Three.js viewer
 
-[Visit the live HTML version](https://lunar-module-3d.vercel.app/) — no installation required; use a browser with WebGL 2 support.
+The live version needs no installation, only a browser with WebGL 2 support.
 
 This is a separate browser implementation, not the C application embedded in a webpage. It preserves the model's geometry and colors while adding modern materials, shadows, touch controls, and reset view.
 
@@ -72,12 +83,3 @@ assets/images/    Core and HTML version screenshots
 ```
 
 Keep `assets/` alongside `html/` for local development. If the core cabin geometry changes, run `npm run import-model` from `html/` to regenerate `html/src/cabin-data.json`. Other browser model parts are maintained in `html/src/model.ts`; native changes are not automatically synchronized.
-
-## Screenshots
-
-Fresh renders from the refactored C/OpenGL application alongside the same terrain and flag choices in the new HTML viewer.
-
-| Scene | Core — refactored desktop | HTML — new browser viewer |
-| --- | --- | --- |
-| Mars / USA | ![Refactored C/OpenGL model on Mars with the USA flag](assets/images/mars-usa.png) | ![New HTML viewer on Mars with the USA flag](assets/images/html-mars-usa.png) |
-| Venus / Spain | ![Refactored C/OpenGL model on Venus with the Spain flag](assets/images/venus-spain.png) | ![New HTML viewer on Venus with the Spain flag](assets/images/html-venus-spain.png) |
